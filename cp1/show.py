@@ -1,5 +1,6 @@
 import numpy as np
 import conf_interval as ci
+import probability_calc as pc
 
 def show_ci(gamma: float, N: list):
     for n in N:
@@ -20,3 +21,20 @@ def show_ci(gamma: float, N: list):
         print('* для дисперсії/ нормальний розподіл: {}'.format(ci3))
         print('     довжина інтервалу: {}'.format(ci3[1] - ci3[0]))
         print('-' * 110)
+
+def show_pc(method, M, n0, epsilon, method_name, z_gamma: False, gamma: False):
+    print('\n---МЕТОД: {}---'.format(method_name))
+    for m in M:
+        print('\n   M = {}'.format(m))
+        n = pc.sample_size(method, m, n0, epsilon, z_gamma, gamma)
+        ests = method(m, n)
+        smpl_prob = pc.sample_mean(ests)
+        smpl_var = pc.sample_var(ests)
+        conf_int_mean = ci.mean_conf_interval_unknown_dist(ests, gamma)
+        conf_int_var = ci.var_conf_interval(ests, gamma)
+        print('* оцінка ймовірності: {}'.format(smpl_prob))
+        print('* вибіркова дисперсія: {}'.format(smpl_var))
+        print('* довірчий інтервал для мат.сподівання: {}'.format(conf_int_mean))
+        print('* довірчий інтервал для дисперсії: {}'.format(conf_int_var))
+        print('* кількість виконаних реалізацій: {}'.format(n))
+    print('-' * 80)
