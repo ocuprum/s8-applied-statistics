@@ -1,4 +1,3 @@
-import numpy as np
 import conf_interval as ci
 import probability_calc as pc
 

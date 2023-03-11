@@ -1,5 +1,4 @@
 import show
-import conf_interval as ci
 import probability_calc as pc
 
 task = int(input('Введіть номер завдання: '))
@@ -7,7 +6,7 @@ task = int(input('Введіть номер завдання: '))
 while task in [1, 2]:
     if task == 1:
         gamma = 0.01
-        N = [100, 10000, 1000000]
+        N = [10000000]
         show.show_ci(gamma, N)
 
     elif task == 2:
