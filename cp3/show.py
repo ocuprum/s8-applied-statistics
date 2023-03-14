@@ -1,3 +1,5 @@
+import numpy as np
+import time
 import scipy.stats as stats
 import hypothesis_testing as ht
 
@@ -52,4 +54,9 @@ def show_randomness(N, gamma):
     print('КРИТЕРІЙ ВИПАДКОВОСТІ\n')
 
     for n in N:
-        
+        print(' * Розмір вибірки: {}'.format(n))
+
+        uni_sample = stats.uniform(-1, 1).rvs(size=n)
+        X = np.array([np.sum(uni_sample[:i-1]) / i for i in range(1, n+1)])
+        #X = np.array([np.sum(stats.uniform(-1, 1).rvs(size=i)) / i for i in range(1, n+1)])
+        print('Результат -> гіпотеза {}\n'.format(ht.inversions_crit(X, gamma)))  

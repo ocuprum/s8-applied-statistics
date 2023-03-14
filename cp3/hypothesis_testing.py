@@ -58,7 +58,7 @@ def kendall_crit(X, Y, gamma):
         count += test_arr[stat_arr[i] < test_arr].size
     kendall_stat = 4 * count / (n * (n-1)) - 1
 
-    z_gamma = stats.norm.ppf(1-gamma/2)
+    z_gamma = stats.norm.ppf(1-gamma)
     crit = 2 * z_gamma / (3 * (n ** 0.5))
 
     hypothesis = 0 if abs(kendall_stat) < crit else 1
@@ -66,5 +66,19 @@ def kendall_crit(X, Y, gamma):
     return hypothesis
 
 
-def inversions_crit():
+def inversions_crit(X, gamma):
     '''Гіпотеза випадковості'''
+
+    n = X.size
+
+    invers_stat = 0
+    for i in range(n):
+        test_arr = X[i+1:]
+        invers_stat += test_arr[X[i] > test_arr].size
+
+    z_gamma = stats.norm.ppf(1-gamma)
+    norm_stat = 6 / (n * (n ** 0.5)) * abs(invers_stat - n * (n-1) / 4)
+
+    hypothesis = 0 if norm_stat <= z_gamma else 1
+
+    return hypothesis
