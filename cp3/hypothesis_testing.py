@@ -1,13 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 
-def is_empty_block(Y, l=None, r=None):
-    if l is None:
-        return int(Y[Y <= r].size == 0)
-    elif r is None:
-        return int(Y[l < Y].size == 0)
-    else:
-        return int(Y[(l < Y) & (Y <= r)].size == 0)
+is_empty_block = lambda Y, l, r: int(Y[(l < Y) & (Y <= r)].size == 0)
 
 def empty_blocks(X, Y, gamma):
     '''Критерій однорідності - критерій пустих блоків'''
@@ -15,10 +9,10 @@ def empty_blocks(X, Y, gamma):
     X.sort()
     n, m = X.size, Y.size
 
-    eb_count = is_empty_block(Y, r=X[0])
+    eb_count = is_empty_block(Y, l=-np.inf, r=X[0])
     for i in range(n-1):
         eb_count += is_empty_block(Y, X[i], X[i+1])
-    eb_count += is_empty_block(Y, l=X[-1])
+    eb_count += is_empty_block(Y, l=X[-1], r=np.inf)
 
     z_gamma = stats.norm.ppf(1-gamma)
     ro = m // n
@@ -28,9 +22,24 @@ def empty_blocks(X, Y, gamma):
 
     return hypothesis
 
-def spearman_criteria():
+def spearman_criteria(X, Y, gamma):
     '''Гіпотеза незалежності - критерій Спірмена'''
-    pass
+    
+    sorted_X = np.sort(X)
+    n = X.size
+
+    nums = np.array(range(1, n+1))
+    stat_arr = np.array([Y[np.where(X == x)[0]] for x in sorted_X])
+    stat_arr = stat_arr.reshape(stat_arr.shape[0])
+
+    spearman_stat = 1 - (6 / (n * (n ** 2 -1))) * np.sum((nums-stat_arr) ** 2)
+
+    z_gamma = stats.norm.ppf(1-gamma)
+    criteria = z_gamma / (n ** 0.5)
+
+    hypothesis = 0 if abs(spearman_stat) < criteria else 1
+
+    return hypothesis
 
 
 def kendall_criteria():
