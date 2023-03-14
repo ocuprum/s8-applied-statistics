@@ -20,14 +20,14 @@ def show_homogeneity(N, M, gamma, xlam, ylam):
 
 
 
-def show_independence(criteria, N, gamma):
+def show_independence(crit, N, gamma):
     print('-' * 25)
     
-    if criteria == 'spearman':
-        criteria = ht.spearman_criteria
+    if crit == 'spearman':
+        crit = ht.spearman_crit
         print('КРИТЕРІЙ СПІРМЕНА\n')
-    elif criteria == 'kendall':
-        criteria = ht.kendall_criteria
+    elif crit == 'kendall':
+        crit = ht.kendall_crit
         print('КРИТЕРІЙ КЕНДАЛЛА\n')
 
 
@@ -39,13 +39,17 @@ def show_independence(criteria, N, gamma):
         eta = stats.uniform(-1, 1).rvs(size=n)
         print('1) Y - сума в.в.')
         Y = X * eta
-        print('Результат -> гіпотеза {}\n'.format(criteria(X, Y, gamma)))
+        print('Результат -> гіпотеза {}\n'.format(crit(X, Y, gamma)))
 
         print('2) Y - добуток в.в.')
         Y = X + eta
-        print('Результат -> гіпотеза {}\n\n'.format(criteria(X, Y, gamma )))    
+        print('Результат -> гіпотеза {}\n\n'.format(crit(X, Y, gamma)))    
 
 
 
-def show_randomness():
-    pass
+def show_randomness(N, gamma):
+    print('-' * 25)
+    print('КРИТЕРІЙ ВИПАДКОВОСТІ\n')
+
+    for n in N:
+        

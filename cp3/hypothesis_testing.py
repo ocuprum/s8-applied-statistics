@@ -17,12 +17,13 @@ def empty_blocks(X, Y, gamma):
     z_gamma = stats.norm.ppf(1-gamma)
     ro = m // n
 
-    criteria = n / (1 + ro) + (n ** 0.5) * z_gamma * ro / ((1 + ro) ** 1.5)
-    hypothesis = 0 if eb_count <= criteria else 1
+    crit = n / (1 + ro) + (n ** 0.5) * z_gamma * ro / ((1 + ro) ** 1.5)
+    hypothesis = 0 if eb_count <= crit else 1
 
     return hypothesis
 
-def spearman_criteria(X, Y, gamma):
+
+def spearman_crit(X, Y, gamma):
     '''Гіпотеза незалежності - критерій Спірмена'''
     
     sorted_X = np.sort(X)
@@ -35,19 +36,35 @@ def spearman_criteria(X, Y, gamma):
     spearman_stat = 1 - (6 / (n * (n ** 2 -1))) * np.sum((nums-stat_arr) ** 2)
 
     z_gamma = stats.norm.ppf(1-gamma)
-    criteria = z_gamma / (n ** 0.5)
+    crit = z_gamma / (n ** 0.5)
 
-    hypothesis = 0 if abs(spearman_stat) < criteria else 1
+    hypothesis = 0 if abs(spearman_stat) < crit else 1
 
     return hypothesis
 
 
-def kendall_criteria():
+def kendall_crit(X, Y, gamma):
     '''Гіпотеза незалежності - критерій Кендалла'''
-    pass
+
+    sorted_X = np.sort(X)
+    n = X.size
+
+    stat_arr = np.array([Y[np.where(X == x)[0]] for x in sorted_X])
+    stat_arr = stat_arr.reshape(stat_arr.shape[0])
+
+    count = 0
+    for i in range(n):
+        test_arr = stat_arr[i+1:]
+        count += test_arr[stat_arr[i] < test_arr].size
+    kendall_stat = 4 * count / (n * (n-1)) - 1
+
+    z_gamma = stats.norm.ppf(1-gamma/2)
+    crit = 2 * z_gamma / (3 * (n ** 0.5))
+
+    hypothesis = 0 if abs(kendall_stat) < crit else 1
+
+    return hypothesis
 
 
-
-def inversions_criteria():
+def inversions_crit():
     '''Гіпотеза випадковості'''
-    pass

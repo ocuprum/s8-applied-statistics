@@ -19,12 +19,9 @@ if task == 1:
 
 elif task == 2:
     show.show_independence('spearman', N, gamma)
-    #show.show_independence()
 
 elif task == 3:
-    pass
+    show.show_independence('kendall', N, gamma)
 
 elif task == 4: 
-    pass
-
-
+    show.show_randomness(N, gamma)
