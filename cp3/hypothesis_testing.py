@@ -18,6 +18,8 @@ def empty_blocks(X, Y, gamma):
     ro = m // n
 
     crit = n / (1 + ro) + (n ** 0.5) * z_gamma * ro / ((1 + ro) ** 1.5)
+    print('Count: {}'.format(eb_count))
+    print('Crit: {}'.format(crit))
     hypothesis = 0 if eb_count <= crit else 1
 
     return hypothesis
@@ -37,6 +39,10 @@ def spearman_crit(X, Y, gamma):
 
     z_gamma = stats.norm.ppf(1-gamma)
     crit = z_gamma / (n ** 0.5)
+
+    print('Cov: \n{}'.format(np.cov(X, Y)))
+    print('Spear Stat: {}'.format(spearman_stat))
+    print('Crit: {}'.format(crit))
 
     hypothesis = 0 if abs(spearman_stat) < crit else 1
 
@@ -60,6 +66,9 @@ def kendall_crit(X, Y, gamma):
 
     z_gamma = stats.norm.ppf(1-gamma)
     crit = 2 * z_gamma / (3 * (n ** 0.5))
+
+    print('Kend Stat: {}'.format(kendall_stat))
+    print('Crit: {}'.format(crit))
 
     hypothesis = 0 if abs(kendall_stat) < crit else 1
 

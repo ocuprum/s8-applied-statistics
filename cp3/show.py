@@ -38,14 +38,14 @@ def show_independence(crit, N, gamma):
 
         X = stats.uniform(0, 1).rvs(size=n)
 
-        eta = stats.uniform(-1, 1).rvs(size=n)
+        eta = stats.uniform(1, 2).rvs(size=n)
         print('1) Y - сума в.в.')
         Y = X * eta
-        print('Результат -> гіпотеза {}\n'.format(crit(X, Y, gamma)))
+        print('Результат -> гіпотеза {}\n'.format(crit(X, eta, gamma)))
 
         print('2) Y - добуток в.в.')
         Y = X + eta
-        print('Результат -> гіпотеза {}\n\n'.format(crit(X, Y, gamma)))    
+        print('Результат -> гіпотеза {}\n\n'.format(crit(X, eta, gamma)))    
 
 
 
@@ -57,6 +57,7 @@ def show_randomness(N, gamma):
         print(' * Розмір вибірки: {}'.format(n))
 
         uni_sample = stats.uniform(-1, 1).rvs(size=n)
-        X = np.array([np.sum(uni_sample[:i-1]) / i for i in range(1, n+1)])
+        #X = np.array([np.sum(uni_sample[:i-1]) / i for i in range(1, n+1)])
         #X = np.array([np.sum(stats.uniform(-1, 1).rvs(size=i)) / i for i in range(1, n+1)])
+        X = stats.uniform(0, 1).rvs(size=n)
         print('Результат -> гіпотеза {}\n'.format(ht.inversions_crit(X, gamma)))  

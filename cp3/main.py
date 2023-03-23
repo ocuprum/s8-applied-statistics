@@ -15,7 +15,7 @@ task = int(input('Введіть номер завдання: '))
 
 while task in [1, 2, 3, 4]:
     if task == 1:
-        xlam, ylam = 1, 1.2
+        xlam, ylam = 1, 1
         show.show_homogeneity(N, M, gamma, xlam, ylam)
 
     elif task == 2:
